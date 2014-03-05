@@ -17,8 +17,13 @@ RUN apt-get install -y hadoop-0.20-conf-pseudo
 
 RUN sudo -u hdfs hdfs namenode -format
 
-#RUN for x in `cd /etc/init.d ; ls hadoop-hdfs-*` ; do sudo service $x start ; done
+RUN apt-get install -y supervisor
+RUN mkdir -p /var/run/sshd
+RUN mkdir -p /var/log/supervisor
+
+ADD supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Map Reduce ports
 EXPOSE 8021 50030 9290 50060 50070
 
+CMD ["/usr/bin/supervisord"]
